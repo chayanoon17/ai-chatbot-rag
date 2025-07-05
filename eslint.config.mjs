@@ -92,7 +92,7 @@ export default defineConfig([
     files: ["**/*.ts", "**/*.tsx"],
 
     rules: {
-      "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
+      "no-console": "warn",
       "react/prop-types": "off",
       "react/jsx-uses-react": "off",
       "react/react-in-jsx-scope": "off",
