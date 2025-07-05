@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-
 import { prisma } from "@/lib/prisma";
 
 export async function GET() {
@@ -43,7 +42,7 @@ export async function DELETE(request: Request) {
 
     return NextResponse.json(
       { error: "Failed to delete document" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
