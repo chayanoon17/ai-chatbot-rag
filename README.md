@@ -1,53 +1,65 @@
-# Next.js & HeroUI Template
+# Chatbot AI RAG (Retrieval-Augmented Generation)
 
-This is a template for creating applications using Next.js 14 (app directory) and HeroUI (v2).
+> ระบบแชทบอท AI ที่รองรับ RAG (Retrieval-Augmented Generation) พร้อมฟีเจอร์ Streaming Response แบบ Real-time
 
-[Try it on CodeSandbox](https://githubbox.com/heroui-inc/heroui/next-app-template)
+## คุณสมบัติ
+- ถาม-ตอบด้วย GPT และ fallback เป็น RAG เมื่อ AI ไม่มั่นใจ
+- Streaming Response: ข้อความตอบกลับทีละ chunk แบบ real-time
+- รองรับเอกสารฐานความรู้ (Knowledge Base) ด้วย Embedding + Prisma
+- Next.js 14, TypeScript, TailwindCSS, Prisma, PostgreSQL
 
-## Technologies Used
+## วิธีใช้งาน
 
-- [Next.js 14](https://nextjs.org/docs/getting-started)
-- [HeroUI v2](https://heroui.com/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Tailwind Variants](https://tailwind-variants.org)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Framer Motion](https://www.framer.com/motion/)
-- [next-themes](https://github.com/pacocoursey/next-themes)
-
-## How to Use
-
-### Use the template with create-next-app
-
-To create a new project based on this template using `create-next-app`, run the following command:
-
+### 1. ติดตั้ง Dependencies
 ```bash
-npx create-next-app -e https://github.com/heroui-inc/next-app-template
-```
-
-### Install dependencies
-
-You can use one of them `npm`, `yarn`, `pnpm`, `bun`, Example using `npm`:
-
-```bash
+pnpm install
+# หรือ
+yarn install
+# หรือ
 npm install
 ```
 
-### Run the development server
-
+### 2. ตั้งค่าฐานข้อมูล
+1. สร้างไฟล์ `.env` และกำหนด DATABASE_URL สำหรับ PostgreSQL
+2. รัน migration:
 ```bash
+npx prisma migrate dev
+```
+
+### 3. รันโปรเจกต์
+```bash
+pnpm dev
+# หรือ
+yarn dev
+# หรือ
 npm run dev
 ```
 
-### Setup pnpm (optional)
+### 4. เพิ่มเอกสาร (Document)
+เพิ่มข้อมูลในตาราง Document (ผ่าน Prisma Studio หรือ API)
 
-If you are using `pnpm`, you need to add the following code to your `.npmrc` file:
+### 5. เริ่มแชทกับ AI
+เข้าใช้งานผ่านหน้าเว็บ `/chat`
 
-```bash
-public-hoist-pattern[]=*@heroui/*
+## โครงสร้างโปรเจกต์
+
+```
+app/           // Next.js API & Pages
+components/    // React Components
+hooks/         // React Hooks (เช่น useChatLogic)
+lib/           // ฟังก์ชัน AI, Embedding, Prisma
+prisma/        // Prisma schema
+public/        // Static files
 ```
 
-After modifying the `.npmrc` file, you need to run `pnpm install` again to ensure that the dependencies are installed correctly.
+## ฟีเจอร์เด่น
+- **RAG**: ใช้ Embedding + Similarity Search เพื่อค้นหาข้อมูลที่เกี่ยวข้อง
+- **Streaming**: ส่งข้อความตอบกลับแบบ chunk real-time
+- **Fallback**: ถ้า GPT ไม่มั่นใจ จะใช้ RAG อัตโนมัติ
+
+## ข้อกำหนดระบบ
+- Node.js 18+
+- PostgreSQL
 
 ## License
-
-Licensed under the [MIT license](https://github.com/heroui-inc/next-app-template/blob/main/LICENSE).
+MIT

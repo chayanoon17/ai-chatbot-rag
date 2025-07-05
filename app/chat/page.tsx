@@ -13,7 +13,7 @@ export default function ChatbotPage() {
   return (
     <div className="flex flex-col items-center w-full bg-black text-white ">
       
-      <div className="flex flex-col w-full max-w-3xl gap-2  pb-40">
+      <div className="flex flex-col w-full max-w-3xl gap-2 pt-16 pb-40">
         {messages.map((msg, index) => (
           <ChatMessage key={index} role={msg.role} message={msg.message} />
         ))}

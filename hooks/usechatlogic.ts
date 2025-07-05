@@ -12,7 +12,7 @@ export function useChatLogic() {
   const [error, setError] = useState<string | null>(null);
 
   const sendMessage = async () => {
-    if (!input.trim()) return;
+    if (loading || !input.trim()) return;
 
     const userMsg: ChatMessage = { role: "user", message: input };
     const updatedMessages = [...messages, userMsg];
@@ -20,8 +20,7 @@ export function useChatLogic() {
     setInput("");
     setLoading(true);
 
-    const thinking: ChatMessage = { role: "bot", message: "Thinking..." };
-    setMessages((prev) => [...prev, thinking]);
+    setMessages((prev) => [...prev, { role: "bot", message: "Thinking..." }]);
 
     try {
       const res = await fetch("/api/chat", {
@@ -30,13 +29,34 @@ export function useChatLogic() {
         body: JSON.stringify({ messages: updatedMessages }),
       });
 
-      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(`Server error: ${res.status}`);
+      }
 
-      if (data.reply) {
-        setMessages((prev) => [
-          ...prev.slice(0, -1), // remove "Thinking..."
-          { role: "bot", message: data.reply },
-        ]);
+      // Streaming response
+      if (res.body) {
+        const reader = res.body.getReader();
+        const decoder = new TextDecoder();
+        let done = false;
+        let aiMsg = "";
+        setMessages((prev) => [...prev.slice(0, -1), { role: "bot", message: "" }]);
+        while (!done) {
+          const { value, done: doneReading } = await reader.read();
+          done = doneReading;
+          if (value) {
+            aiMsg += decoder.decode(value);
+            setMessages((prev) => [
+              ...prev.slice(0, -1),
+              { role: "bot", message: aiMsg },
+            ]);
+          }
+        }
+        if (!aiMsg) {
+          setMessages((prev) => [
+            ...prev.slice(0, -1),
+            { role: "bot", message: "No response from AI" },
+          ]);
+        }
       } else {
         setMessages((prev) => [
           ...prev.slice(0, -1),

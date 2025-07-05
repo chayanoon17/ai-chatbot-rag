@@ -48,7 +48,7 @@ export function ChatMessage({ message, role }: ChatMessageProps) {
               onClick={() => {
                 setLiked(!liked);
                 setShowAlert(true);
-                setTimeout(() => setShowAlert(false), 2000);
+                setTimeout(() => setShowAlert(false), 1000);
               }}
               className="mt-2 self-start"
             >
@@ -64,7 +64,7 @@ export function ChatMessage({ message, role }: ChatMessageProps) {
               onClick={() => {
                 setCopy(!copy);
                 setShowAlertCopy(true);
-                setTimeout(() => setShowAlert(false), 2000);
+                setTimeout(() => setShowAlert(false), 1000);
               }}
               className="mt-2 self-start"
             >
@@ -78,15 +78,15 @@ export function ChatMessage({ message, role }: ChatMessageProps) {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -50, opacity: 0 }}
                 transition={{ duration: 0.4 }}
-                className=" absolute top-4 flex  items-center justify-center w-[40%] z-50 text-white px-4 py-2 "
+                className=" absolute top-4 flex  items-center justify-center w-[50%] z-50 text-white px-4 py-2 "
               >
                 <Alert
                   hideIcon
-                  color="secondary"
+                  color="danger"
                   description="Thank you for liking!"
                   title="Liked!"
-                  variant="bordered"
                 />
+                
               </motion.div>
             )}
             {showAlertCopy && (
@@ -95,14 +95,13 @@ export function ChatMessage({ message, role }: ChatMessageProps) {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -50, opacity: 0 }}
                 transition={{ duration: 0.4 }}
-                className=" absolute top-4 flex  items-center justify-center w-[40%] z-50 text-white px-4 py-2 "
+                className=" absolute top-4 flex  items-center justify-center w-[50%] z-50 text-white px-4 py-2 "
               >
                 <Alert
                   hideIcon
-                  color="secondary"
+                  color="danger"
                   description="Successfully copied!"
                   title="Copy!"
-                  variant="bordered"
                 />
               </motion.div>
             )}
