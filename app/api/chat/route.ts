@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import { askLLM, ChatMessage } from "@/lib/ai/chat";
 import { getEmbedding } from "@/lib/ai/embedding";
 import { prisma } from "@/lib/prisma";
@@ -9,11 +10,24 @@ type RequestBody = {
 
 function isUncertainAnswer(answer: string) {
   const uncertainPhrases = [
-    "ขอโทษ", "ไม่ทราบ", "ไม่แน่ใจ", "ไม่สามารถตอบได้", "sorry", "I don't know",
-    "ขึ้นอยู่กับ", "สามารถตรวจสอบ", "ควรตรวจสอบ", "แนะนำให้", "ข้อมูลอาจแตกต่าง"
+    "ขอโทษ",
+    "ไม่ทราบ",
+    "ไม่แน่ใจ",
+    "ไม่สามารถตอบได้",
+    "sorry",
+    "I don't know",
+    "ขึ้นอยู่กับ",
+    "สามารถตรวจสอบ",
+    "ควรตรวจสอบ",
+    "แนะนำให้",
+    "ข้อมูลอาจแตกต่าง",
   ];
-  return uncertainPhrases.some(keyword => answer.toLowerCase().includes(keyword.toLowerCase()))
-    || answer.length < 20;
+
+  return (
+    uncertainPhrases.some((keyword) =>
+      answer.toLowerCase().includes(keyword.toLowerCase()),
+    ) || answer.length < 20
+  );
 }
 
 export async function POST(request: Request) {
@@ -24,17 +38,18 @@ export async function POST(request: Request) {
     if (!messages || !Array.isArray(messages)) {
       return NextResponse.json(
         { error: "messages must be an array" },
-        { status: 400 }
+        { status: 400 },
       );
     }
     if (
       !messages.every(
-        (msg) => typeof msg.role === "string" && typeof msg.message === "string"
+        (msg) =>
+          typeof msg.role === "string" && typeof msg.message === "string",
       )
     ) {
       return NextResponse.json(
         { error: "invalid message format" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -43,8 +58,13 @@ export async function POST(request: Request) {
     // Streaming helper and mock streaming LLM moved to top-level
 
     // 1. ถาม GPT ก่อน (stream)
-    if (!isUncertainAnswer(await askLLM([{ role: "user", message: latestMessage }]))) {
+    if (
+      !isUncertainAnswer(
+        await askLLM([{ role: "user", message: latestMessage }]),
+      )
+    ) {
       const stream = createStream(streamLLM(latestMessage));
+
       return new NextResponse(stream, {
         headers: {
           "Content-Type": "text/plain; charset=utf-8",
@@ -76,6 +96,7 @@ export async function POST(request: Request) {
     const context = results.map((r) => r.content).join("\n---\n");
     const ragPrompt = `Context:\n${context}\n\nQ: ${latestMessage}\nA:`;
     const stream = createStream(streamLLM(ragPrompt));
+
     return new NextResponse(stream, {
       headers: {
         "Content-Type": "text/plain; charset=utf-8",
@@ -86,11 +107,12 @@ export async function POST(request: Request) {
     console.error(
       "LLM error:",
       (error as Error).message,
-      (error as Error).stack
+      (error as Error).stack,
     );
+
     return NextResponse.json(
       { error: "Failed to generate reply" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -98,9 +120,11 @@ export async function POST(request: Request) {
 // Streaming helper (must be top-level)
 function createStream(generator: AsyncGenerator<string, void, void>) {
   const encoder = new TextEncoder();
+
   return new ReadableStream({
     async pull(controller) {
       const { value, done } = await generator.next();
+
       if (done) {
         controller.close();
       } else {
@@ -114,6 +138,7 @@ function createStream(generator: AsyncGenerator<string, void, void>) {
 async function* streamLLM(prompt: string) {
   // If askLLM supports streaming, use it here. Otherwise, split reply for demo.
   const reply = await askLLM([{ role: "user", message: prompt }]);
+
   for (let i = 0; i < reply.length; i += 10) {
     yield reply.slice(i, i + 10);
     await new Promise((res) => setTimeout(res, 20));

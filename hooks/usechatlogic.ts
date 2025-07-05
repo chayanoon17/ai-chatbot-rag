@@ -16,6 +16,7 @@ export function useChatLogic() {
 
     const userMsg: ChatMessage = { role: "user", message: input };
     const updatedMessages = [...messages, userMsg];
+
     setMessages(updatedMessages);
     setInput("");
     setLoading(true);
@@ -39,9 +40,14 @@ export function useChatLogic() {
         const decoder = new TextDecoder();
         let done = false;
         let aiMsg = "";
-        setMessages((prev) => [...prev.slice(0, -1), { role: "bot", message: "" }]);
+
+        setMessages((prev) => [
+          ...prev.slice(0, -1),
+          { role: "bot", message: "" },
+        ]);
         while (!done) {
           const { value, done: doneReading } = await reader.read();
+
           done = doneReading;
           if (value) {
             aiMsg += decoder.decode(value);
@@ -63,7 +69,7 @@ export function useChatLogic() {
           { role: "bot", message: "No response from AI" },
         ]);
       }
-    } catch (err) {
+    } catch {
       setMessages((prev) => [
         ...prev.slice(0, -1),
         { role: "bot", message: "Something went wrong" },

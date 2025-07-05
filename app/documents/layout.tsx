@@ -1,11 +1,7 @@
-export default function DocumentsLayout ({
+export default function DocumentsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <div className="">
-      {children}
-    </div>
-  );
+  return <div className="">{children}</div>;
 }

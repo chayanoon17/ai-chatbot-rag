@@ -16,8 +16,10 @@ export function useDocuments() {
     setError(null);
     try {
       const res = await fetch("/api/documents");
+
       if (!res.ok) throw new Error("Failed to fetch documents");
       const data = await res.json();
+
       setDocuments(data);
     } catch (err: any) {
       setError(err.message || "Unknown error");
@@ -36,6 +38,7 @@ export function useDocuments() {
         body: JSON.stringify({ content }),
         headers: { "Content-Type": "application/json" },
       });
+
       if (!res.ok) throw new Error("Failed to add document");
       await fetchDocuments();
     } catch (err: any) {
@@ -55,11 +58,12 @@ export function useDocuments() {
         body: JSON.stringify({ id }),
         headers: { "Content-Type": "application/json" },
       });
+
       if (!res.ok) throw new Error("Failed to delete document");
       console.log("Document deleted successfully");
       await fetchDocuments();
     } catch (err: any) {
-        console.error("Failed to delete document:", err);
+      console.error("Failed to delete document:", err);
       setError(err.message || "Unknown error");
     } finally {
       setLoading(false);

@@ -18,8 +18,8 @@ export const HeartIcon = ({
     <svg
       fill={filled ? fill : "none"}
       height={size || height || 14}
-      width={size || width || 14}
       viewBox="0 0 24 24"
+      width={size || width || 14}
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >

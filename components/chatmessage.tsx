@@ -1,10 +1,12 @@
 import clsx from "clsx";
 import { motion } from "framer-motion";
-import { HeartIcon } from "@/components/icons/heartIcon";
 import { Button } from "@heroui/button";
 import { useState } from "react";
 import { Alert } from "@heroui/alert";
+
 import { CopyIcon } from "./icons/copyicon";
+
+import { HeartIcon } from "@/components/icons/heartIcon";
 
 type ChatMessageProps = {
   message: string;
@@ -20,20 +22,20 @@ export function ChatMessage({ message, role }: ChatMessageProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
       className={clsx(
         "flex w-full mb-2",
-        isUser ? "justify-end" : "justify-start"
+        isUser ? "justify-end" : "justify-start",
       )}
+      initial={{ opacity: 0, y: 10 }}
+      transition={{ duration: 0.3 }}
     >
       <div
         className={clsx(
           "flex flex-col max-w-[80%] px-4 py-2 rounded-lg shadow-sm",
           isUser
             ? "bg-blue-900 text-right self-end items-end text-white"
-            : " text-left self-start items-start text-white"
+            : " text-left self-start items-start text-white",
         )}
       >
         <p className="text-sm whitespace-pre-wrap">{message}</p>
@@ -44,29 +46,29 @@ export function ChatMessage({ message, role }: ChatMessageProps) {
             <Button
               isIconOnly
               aria-label="Like"
+              className="mt-2 self-start"
               color="danger"
               onClick={() => {
                 setLiked(!liked);
                 setShowAlert(true);
                 setTimeout(() => setShowAlert(false), 1000);
               }}
-              className="mt-2 self-start"
             >
               <HeartIcon
-                filled={liked}
                 fill={liked ? "#e00" : "currentColor"}
+                filled={liked}
               />
             </Button>
             <Button
               isIconOnly
               aria-label="Like"
+              className="mt-2 self-start"
               color="danger"
               onClick={() => {
                 setCopy(!copy);
                 setShowAlertCopy(true);
                 setTimeout(() => setShowAlert(false), 1000);
               }}
-              className="mt-2 self-start"
             >
               <CopyIcon />
             </Button>
@@ -74,11 +76,11 @@ export function ChatMessage({ message, role }: ChatMessageProps) {
             {/* Alert เล็ก */}
             {showAlert && (
               <motion.div
-                initial={{ y: -50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -50, opacity: 0 }}
-                transition={{ duration: 0.4 }}
                 className=" absolute top-4 flex  items-center justify-center w-[50%] z-50 text-white px-4 py-2 "
+                exit={{ y: -50, opacity: 0 }}
+                initial={{ y: -50, opacity: 0 }}
+                transition={{ duration: 0.4 }}
               >
                 <Alert
                   hideIcon
@@ -86,16 +88,15 @@ export function ChatMessage({ message, role }: ChatMessageProps) {
                   description="Thank you for liking!"
                   title="Liked!"
                 />
-                
               </motion.div>
             )}
             {showAlertCopy && (
               <motion.div
-                initial={{ y: -50, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -50, opacity: 0 }}
-                transition={{ duration: 0.4 }}
                 className=" absolute top-4 flex  items-center justify-center w-[50%] z-50 text-white px-4 py-2 "
+                exit={{ y: -50, opacity: 0 }}
+                initial={{ y: -50, opacity: 0 }}
+                transition={{ duration: 0.4 }}
               >
                 <Alert
                   hideIcon

@@ -2,18 +2,10 @@
 
 import { Textarea } from "@heroui/input";
 import React, { useState } from "react";
-import { useDocuments } from "@/hooks/useDocuments";
 import { Button } from "@heroui/button";
+
+import { useDocuments } from "@/hooks/useDocuments";
 import UserIcon from "@/components/icons/usericon";
-
-type UserIconProps = {
-  fill?: string;
-  size?: number;
-  height?: number;
-  width?: number;
-  [key: string]: any;
-};
-
 
 export default function DocumentManager() {
   const { documents, loading, error, addDocument, deleteDocument } =
@@ -42,42 +34,43 @@ export default function DocumentManager() {
       <h1>Document Management</h1>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <Textarea
-        rows={6}
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        placeholder="พิมพ์เมนูอาหารทีละบรรทัด เช่น\nข้าวผัดกุ้ง — ข้าวผัดกับกุ้งสด\nต้มยำกุ้ง — ซุปเผ็ดรสจัด"
-        disabled={loading}
         classNames={{
           base: "max-w-xxl w-full",
           input: "resize-y min-h-[200px]",
         }}
+        disabled={loading}
+        placeholder="พิมพ์เมนูอาหารทีละบรรทัด เช่น\nข้าวผัดกุ้ง — ข้าวผัดกับกุ้งสด\nต้มยำกุ้ง — ซุปเผ็ดรสจัด"
+        rows={6}
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
       />
       <div className="flex justify-end mt-4 mb-4">
         <Button
-          onClick={handleAddMultiple}
-          disabled={loading}
           color="primary"
+          disabled={loading}
           variant="ghost"
+          onClick={handleAddMultiple}
         >
           Add Multiple Documents
         </Button>
         <Button
+          color="secondary"
+          disabled={loading}
+          variant="flat"
           onClick={async () => {
             try {
               const res = await fetch("/api/generate-embeddings", {
                 method: "POST",
               });
               const data = await res.json();
+
               alert(
-                `✅ ${data.message}\nUpdated: ${data.updated}/${data.total}`
+                `✅ ${data.message}\nUpdated: ${data.updated}/${data.total}`,
               );
             } catch (e) {
               alert(`❌ ${(e as Error).message}`);
             }
           }}
-          disabled={loading}
-          color="secondary"
-          variant="flat"
         >
           Generate Embeddings
         </Button>
@@ -90,11 +83,11 @@ export default function DocumentManager() {
           <li key={doc.id} className="flex justify-between items-center gap-2">
             <span>{doc.content}</span>
             <Button
-              onClick={() => deleteDocument(doc.id)}
-              disabled={loading}
               color="danger"
+              disabled={loading}
               startContent={<UserIcon />}
               variant="bordered"
+              onClick={() => deleteDocument(doc.id)}
             >
               Delete
             </Button>

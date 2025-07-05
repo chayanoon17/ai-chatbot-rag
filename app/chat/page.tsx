@@ -1,6 +1,7 @@
 "use client";
 
 import { Alert } from "@heroui/alert";
+
 import { ChatMessage } from "@/components/chatmessage";
 import { ChatInput } from "@/components/chatInput";
 import { useChatLogic } from "@/hooks/usechatlogic";
@@ -12,17 +13,16 @@ export default function ChatbotPage() {
 
   return (
     <div className="flex flex-col items-center w-full bg-black text-white ">
-      
       <div className="flex flex-col w-full max-w-3xl gap-2 pt-16 pb-40">
         {messages.map((msg, index) => (
-          <ChatMessage key={index} role={msg.role} message={msg.message} />
+          <ChatMessage key={index} message={msg.message} role={msg.role} />
         ))}
         {error && (
           <Alert
+            className="mt-2"
             color="danger"
             variant="flat"
             onClose={() => setError(null)}
-            className="mt-2"
           >
             {error}
           </Alert>
@@ -30,21 +30,19 @@ export default function ChatbotPage() {
       </div>
 
       {messages.length === 0 && input.trim() === "" && (
-
-          <PromptSuggestion
-            onSelect={(prompt) => {
-              setInput(prompt);
-              sendMessage();
-            }}
-          />
-
+        <PromptSuggestion
+          onSelect={(prompt) => {
+            setInput(prompt);
+            sendMessage();
+          }}
+        />
       )}
 
       <ChatInput
+        loading={loading}
         value={input}
         onChange={setInput}
         onSubmit={sendMessage}
-        loading={loading}
       />
     </div>
   );

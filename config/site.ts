@@ -11,7 +11,7 @@ export const siteConfig = {
     {
       label: "Docs",
       href: "/documents",
-    }
+    },
   ],
   navMenuItems: [
     {
@@ -51,6 +51,5 @@ export const siteConfig = {
     github: "https://github.com/chayanoon17",
     docs: "https://heroui.com",
     discord: "https://discord.gg/9gyJdTsX",
-
   },
 };

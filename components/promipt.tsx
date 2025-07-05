@@ -1,8 +1,9 @@
 "use client";
-import { title, subtitle } from "@/components/primitives";
 import { motion } from "framer-motion";
 import { Button } from "@heroui/button";
 import dynamic from "next/dynamic";
+
+import { title, subtitle } from "@/components/primitives";
 
 const LottiePlayer = dynamic(() => import("./lottiepayer"), {
   ssr: false,
@@ -22,10 +23,10 @@ const prompts = [
 export function PromptSuggestion({ onSelect }: PromptSuggestionProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
       className="w-full px-4"
+      initial={{ opacity: 0, y: 20 }}
+      transition={{ duration: 0.5 }}
     >
       {/* ส่วนข้อความ + Lottie */}
       <div className="flex flex-col-reverse md:flex-row items-center justify-center gap-6 mb-6">
@@ -51,8 +52,8 @@ export function PromptSuggestion({ onSelect }: PromptSuggestionProps) {
         {prompts.map((text, index) => (
           <Button
             key={index}
-            variant="bordered"
             className="text-sm whitespace-nowrap"
+            variant="bordered"
             onClick={() => onSelect(text)}
           >
             {text}

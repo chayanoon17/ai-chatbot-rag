@@ -16,12 +16,7 @@ import clsx from "clsx";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
-import {
-  GithubIcon,
-  DiscordIcon,
-  SearchIcon,
-  Logo,
-} from "@/components/icons";
+import { GithubIcon, DiscordIcon, SearchIcon, Logo } from "@/components/icons";
 
 export const Navbar = () => {
   const searchInput = (

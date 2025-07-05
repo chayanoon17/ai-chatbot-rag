@@ -7,10 +7,12 @@ async function main() {
   const doc = await prisma.document.create({
     data: { content: "test create" },
   });
+
   console.log("Created doc:", doc);
 
   // ดึง documents ทั้งหมด
   const all = await prisma.document.findMany();
+
   console.log("All docs:", all);
 }
 

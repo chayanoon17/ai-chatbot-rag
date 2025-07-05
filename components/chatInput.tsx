@@ -8,25 +8,22 @@ type ChatInputProps = {
   loading: boolean;
 };
 
-export function ChatInput({ value, onChange, onSubmit, loading }: ChatInputProps) {
+export function ChatInput({
+  value,
+  onChange,
+  onSubmit,
+  loading,
+}: ChatInputProps) {
   return (
     <form
+      className="w-full bg-black fixed bottom-0 py-6 px-4 flex justify-center"
       onSubmit={(e) => {
         e.preventDefault();
         onSubmit();
       }}
-      className="w-full bg-black fixed bottom-0 py-6 px-4 flex justify-center"
     >
       <div className="w-full relative flex max-w-3xl gap-2">
         <Textarea
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              onSubmit();
-            }
-          }}
           disableAnimation
           disableAutosize
           classNames={{
@@ -35,10 +32,23 @@ export function ChatInput({ value, onChange, onSubmit, loading }: ChatInputProps
           }}
           label="Description"
           placeholder="Type your question here..."
+          value={value}
           variant="bordered"
+          onChange={(e) => onChange(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              onSubmit();
+            }
+          }}
         />
         <div className="flex absolute top-10 right-0">
-          <Button color="primary" variant="light" type="submit" disabled={loading}>
+          <Button
+            color="primary"
+            disabled={loading}
+            type="submit"
+            variant="light"
+          >
             {loading ? "Sending..." : "Send"}
           </Button>
         </div>
