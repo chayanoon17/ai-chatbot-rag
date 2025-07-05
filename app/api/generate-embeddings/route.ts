@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma";
 
 export async function POST() {
   try {
-    console.log('🚀 Starting embedding generation...');
+    console.log(' Starting embedding generation...');
     
     // ดึงเอกสารที่ยังไม่มี embedding
     const documents = await prisma.document.findMany({
@@ -14,7 +14,7 @@ export async function POST() {
       }
     });
 
-    console.log(`📝 Found ${documents.length} documents without embeddings`);
+    console.log(` Found ${documents.length} documents without embeddings`);
 
     if (documents.length === 0) {
       return NextResponse.json({ 
@@ -41,7 +41,7 @@ export async function POST() {
         });
         
         updated++;
-        console.log(`✅ Updated document ${doc.id}`);
+        console.log(` Updated document ${doc.id}`);
         
         // หน่วงเวลาเล็กน้อยเพื่อไม่ให้ rate limit
         await new Promise(resolve => setTimeout(resolve, 200));
@@ -53,7 +53,7 @@ export async function POST() {
         } else {
           errorMsg = `Error processing document ${doc.id}: ${String(error)}`;
         }
-        console.error(`❌ ${errorMsg}`);
+        console.error(` ${errorMsg}`);
         errors.push(errorMsg);
       }
     }
@@ -66,7 +66,7 @@ export async function POST() {
     });
     
   } catch (error) {
-    console.error('💥 Fatal error:', error);
+    console.error(' Fatal error:', error);
     let errorMsg = "Unknown error";
     if (error && typeof error === "object" && "message" in error) {
       errorMsg = (error as { message: string }).message;
